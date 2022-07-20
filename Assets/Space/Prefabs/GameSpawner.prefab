@@ -56,5 +56,4 @@ MonoBehaviour:
   - {fileID: 3460342700682605114, guid: 0894baf1db649194d85b8f6b564f9579, type: 3}
   - {fileID: 5151353575378962313, guid: b5e5019ba23b10d4998d33a3bdf5463f, type: 3}
   _player: {fileID: 1246644993823550810, guid: c15ca63270202884f804acfddcf5c747, type: 3}
-  _playerSpawnPoint: {fileID: 3855266651501474098, guid: 8fedf68e4258fb64b96f013373dd3c3f, type: 3}
-  _playerTransform: {fileID: 7214551998405113332, guid: c15ca63270202884f804acfddcf5c747, type: 3}
+  _playerSpawnPoint: {fileID: 6212177415738344717, guid: 8fedf68e4258fb64b96f013373dd3c3f, type: 3}

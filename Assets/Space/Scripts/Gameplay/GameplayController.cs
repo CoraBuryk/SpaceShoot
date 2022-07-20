@@ -1,26 +1,37 @@
+using System.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
-public class GameplayController : MonoBehaviour
+namespace Assets.Space.Scripts.Gameplay
 {
-    [SerializeField] private GameSpawner _spawner;
-
-    public void EnemyKilled()
+    public class GameplayController : MonoBehaviour
     {
-        ScoreCounter.ChangeScore(ScoreCounter.Counter += 1);
-    }
+        [SerializeField] private GameSpawner _spawner;
 
-    public void PlayerKilled()
-    {
-        if (HealthController.NumOfLives <= 5 && HealthController.NumOfLives > 0)
+        public void EnemyKilled()
         {
-            HealthController.HealthDecreased();
-            _spawner.PlayerSpawn();
-
+            ScoreCounter.ChangeScore(ScoreCounter.Counter += 1);
         }
-        else if (HealthController.NumOfLives == 0)
+
+        public async void PlayerKilled()
         {
-            //game over
+            if (HealthController.NumOfLives <= 5 && HealthController.NumOfLives > 0)
+            {
+                HealthController.HealthDecreased();
+                _spawner.PlayerSpawn();
+
+            }
+            else if (HealthController.NumOfLives == 0)
+            {
+                await Task.Delay(250);
+                SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1, LoadSceneMode.Single);
+            }
+        }
+
+        public void Restart()
+        {
+            HealthController.ResetHealth();
+            ScoreCounter.ChangeScore(0);
         }
     }
-
 }
