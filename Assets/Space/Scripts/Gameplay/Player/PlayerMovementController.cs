@@ -1,40 +1,66 @@
 using UnityEngine;
 
-public class PlayerMovementController : MonoBehaviour
+namespace Assets.Space.Scripts.Gameplay.Player
 {
-    [SerializeField] private float _playerSpeed;
-
-    private CharacterController _controller;
-    private PlayerInput _playerInput;
-    private Vector3 _playerVelocity;
-
-    private void Awake()
+    public class PlayerMovementController : MonoBehaviour
     {
-        _controller = GetComponent<CharacterController>();
-        _playerInput = new PlayerInput();
-    }
+        [SerializeField] private float _playerSpeed;
 
-    private void Update()
-    {
-        Vector2 movement = _playerInput.Player.Move.ReadValue<Vector2>();
-        Vector3 move = new Vector3(movement.x, 0, movement.y);
-        _controller.Move(move * Time.deltaTime * _playerSpeed);
+        private CharacterController _controller;
+        private PlayerInput _playerInput;
+        private Vector3 _playerVelocity;
+        private Vector3 _screenSize;
 
-        if (move != Vector3.zero)
+        private void Awake()
         {
-            gameObject.transform.forward = move;
+            _controller = GetComponent<CharacterController>();
+            _playerInput = new PlayerInput();
+            _screenSize = new Vector3(Camera.main.aspect * Camera.main.orthographicSize, Camera.main.orthographicSize, Camera.main.orthographicSize);
         }
 
-        _controller.Move(_playerVelocity * Time.deltaTime);
-    }
+        private void Update()
+        {
+            Vector2 movement = _playerInput.Player.Move.ReadValue<Vector2>();
+            Vector3 move = new Vector3(movement.x, 0, movement.y);
+            _controller.Move(move * Time.deltaTime * _playerSpeed);
 
-    private void OnEnable()
-    {
-        _playerInput.Enable();
-    }
+            if (move != Vector3.zero)
+            {
+                gameObject.transform.forward = move;
+            }
 
-    private void OnDisable()
-    {
-        _playerInput.Disable();
+            _controller.Move(_playerVelocity * Time.deltaTime);
+
+            if (transform.position.x < -_screenSize.x)
+            {
+                transform.position = new Vector3(-_screenSize.x, transform.position.y, transform.position.z);
+
+            }
+            else if (transform.position.x > _screenSize.x)
+            {
+                transform.position = new Vector3(_screenSize.x, transform.position.y, transform.position.z);
+            }
+
+            if (transform.position.z < -_screenSize.z)
+            {
+                transform.position = new Vector3(transform.position.x, transform.position.y, -_screenSize.z);
+
+            }
+            else if (transform.position.z > _screenSize.z)
+            {
+                transform.position = new Vector3(transform.position.x, transform.position.y, _screenSize.z);
+            }
+
+        }
+
+        private void OnEnable()
+        {
+            _playerInput.Enable();
+        }
+
+        private void OnDisable()
+        {
+            _playerInput.Disable();
+        }
     }
 }

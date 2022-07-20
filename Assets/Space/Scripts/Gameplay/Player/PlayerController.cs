@@ -1,23 +1,27 @@
 using UnityEngine;
 
-public class PlayerController : MonoBehaviour
+namespace Assets.Space.Scripts.Gameplay.Player
 {
-    [SerializeField] GameplayController _gameplayController;
-    [SerializeField] private GameObject _explosion;
-
-    private void OnTriggerEnter(Collider col)
+    public class PlayerController : MonoBehaviour
     {
-        if (col.tag == "EnemyBullet")
+        [SerializeField] GameplayController _gameplayController;
+        [SerializeField] private GameObject _explosion;
+        [SerializeField] private GameSpawner _spawner;
+
+        private void OnTriggerEnter(Collider col)
         {
-            PlayExplosion();
-            _gameplayController.PlayerKilled();
-            Destroy(gameObject);
+            if (col.tag == "EnemyBullet" || col.tag == "Enemy")
+            {
+                PlayExplosion();
+                _gameplayController.PlayerKilled();
+                Destroy(gameObject);
+            }
         }
-    }
 
-    private void PlayExplosion()
-    {
-        GameObject explosion = Instantiate(_explosion);
-        explosion.transform.position = transform.position;
+        private void PlayExplosion()
+        {
+            GameObject explosion = Instantiate(_explosion);
+            explosion.transform.position = transform.position;
+        }
     }
 }

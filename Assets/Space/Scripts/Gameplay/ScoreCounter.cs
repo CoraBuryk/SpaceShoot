@@ -1,14 +1,17 @@
 ﻿using System;
 
-public static class ScoreCounter
+namespace Assets.Space.Scripts.Gameplay
 {
-    public static int Counter { get; set; }
-
-    public static event Action ScoreChange;
-
-    public static void ChangeScore(int newScore)
+    public static class ScoreCounter
     {
-        Counter = newScore;
-        ScoreChange?.Invoke();
+        public static int Counter { get; set; }
+
+        public static event Action ScoreChange;
+
+        public static void ChangeScore(int newScore)
+        {
+            Counter = newScore;
+            ScoreChange?.Invoke();
+        }
     }
 }

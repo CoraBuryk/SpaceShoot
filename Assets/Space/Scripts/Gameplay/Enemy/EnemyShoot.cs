@@ -1,52 +1,55 @@
 using UnityEngine;
 
-public class EnemyShoot : MonoBehaviour
+namespace Assets.Space.Scripts.Gameplay.Enemy
 {
-    [SerializeField] private float _enemyShootingRange;
-    [SerializeField] private GameObject _enemyBulletPref;
-    [SerializeField] private GameObject _enemyBulletParent;
-    [SerializeField] private float _enemyFireRate = 1f;
-    private float _nextFireTime;
-    private Transform _player;
-
-    private void Awake()
+    public class EnemyShoot : MonoBehaviour
     {
-        FindTarget();
-    }
+        [SerializeField] private float _enemyShootingRange;
+        [SerializeField] private GameObject _enemyBulletPref;
+        [SerializeField] private GameObject _enemyBulletParent;
+        [SerializeField] private float _enemyFireRate = 1f;
+        private float _nextFireTime;
+        private Transform _player;
 
-    private void FindTarget()
-    {
-        _player = GameObject.FindGameObjectWithTag("Player").transform;
-    }
-
-    private void Update()
-    {
-        if (_player == null)
+        private void Awake()
         {
-            gameObject.SetActive(false);
+            FindTarget();
         }
-        else
+
+        private void FindTarget()
         {
-            float distanceFromPlayer = Vector2.Distance(_player.position, transform.position);
-            if (distanceFromPlayer < _enemyShootingRange && _nextFireTime < Time.time)
+            _player = GameObject.FindGameObjectWithTag("Player").transform;
+        }
+
+        private void Update()
+        {
+            if (_player == null)
             {
-                Instantiate(_enemyBulletPref, _enemyBulletParent.transform.position, Quaternion.identity);
-                _nextFireTime = Time.time + _enemyFireRate;
+                gameObject.SetActive(false);
             }
-        } 
-    }
+            else
+            {
+                float distanceFromPlayer = Vector2.Distance(_player.position, transform.position);
+                if (distanceFromPlayer < _enemyShootingRange && _nextFireTime < Time.time)
+                {
+                    Instantiate(_enemyBulletPref, _enemyBulletParent.transform.position, Quaternion.identity);
+                    _nextFireTime = Time.time + _enemyFireRate;
+                }
+            }
+        }
 
-    private void OnDrawGizmosSelected()
-    {
-        Gizmos.color = Color.green;
-        Gizmos.DrawWireSphere(transform.position, _enemyShootingRange);
-    }
-
-    private void OnTriggerEnter(Collider col)
-    {
-        if (col.tag == "Player")
+        private void OnDrawGizmosSelected()
         {
-            Destroy(gameObject);
+            Gizmos.color = Color.green;
+            Gizmos.DrawWireSphere(transform.position, _enemyShootingRange);
+        }
+
+        private void OnTriggerEnter(Collider col)
+        {
+            if (col.tag == "Player")
+            {
+                Destroy(gameObject);
+            }
         }
     }
 }

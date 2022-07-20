@@ -1,25 +1,28 @@
 ﻿using System;
 
-public static class HealthController
+namespace Assets.Space.Scripts.Gameplay
 {
-    private static int _maxHealth = 5;
-    public static int NumOfLives { get; set; } = 5;
-
-    public static event Action HealthChange;
-
-    public static void HealthDecreased()
+    public static class HealthController
     {
-        _maxHealth -= 1;
-        NumOfLives = _maxHealth;
+        private static int _maxHealth = 5;
+        public static int NumOfLives { get; set; } = 5;
 
-        HealthChange?.Invoke();
-    }
+        public static event Action HealthChange;
 
-    public static void ResetHealth()
-    {
-        _maxHealth = 5;
-        NumOfLives = _maxHealth;
+        public static void HealthDecreased()
+        {
+            _maxHealth -= 1;
+            NumOfLives = _maxHealth;
 
-        HealthChange?.Invoke();
+            HealthChange?.Invoke();
+        }
+
+        public static void ResetHealth()
+        {
+            _maxHealth = 5;
+            NumOfLives = _maxHealth;
+
+            HealthChange?.Invoke();
+        }
     }
 }

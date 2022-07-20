@@ -1,27 +1,30 @@
 using UnityEngine;
 
-public class PlayerShoot : MonoBehaviour
+namespace Assets.Space.Scripts.Gameplay.Player
 {
-    [SerializeField] GameplayController _gameplayController;
-    [SerializeField] private GameObject _playerBulletPref;
-    [SerializeField] private GameObject _playerBulletParent;
-    [SerializeField] private float _playerFireRate = 0.2f;
-    private float _nextFireTime;
-
-    private void Update()
+    public class PlayerShoot : MonoBehaviour
     {
-        if(_nextFireTime < Time.time)
-        {
-            Instantiate(_playerBulletPref, _playerBulletParent.transform.position, _playerBulletParent.transform.rotation);
-            _nextFireTime = Time.time + _playerFireRate;
-        }        
-    }
+        [SerializeField] GameplayController _gameplayController;
+        [SerializeField] private GameObject _playerBulletPref;
+        [SerializeField] private GameObject _playerBulletParent;
+        [SerializeField] private float _playerFireRate = 0.2f;
+        private float _nextFireTime;
 
-    private void OnTriggerEnter(Collider col)
-    {
-        if(col.tag == "Enemy")
+        private void Update()
         {
-            _gameplayController.PlayerKilled();
+            if (_nextFireTime < Time.time)
+            {
+                Instantiate(_playerBulletPref, _playerBulletParent.transform.position, _playerBulletParent.transform.rotation);
+                _nextFireTime = Time.time + _playerFireRate;
+            }
+        }
+
+        private void OnTriggerEnter(Collider col)
+        {
+            if (col.tag == "Enemy")
+            {
+                _gameplayController.PlayerKilled();
+            }
         }
     }
 }
